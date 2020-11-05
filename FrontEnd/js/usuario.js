@@ -1,23 +1,109 @@
-/* function preencherMusicas(lista){
-    var tabela =
-    "<table border='1' align='center' width='80%' cellspacing='2'>" +
-    "<tr>" +
-    "<th>Musica</th>" + 
-    "<th>Artista</th>"+
-    "<th>Cadastro</th>"+
-    "</tr>";
+function filtrar1(){
 
-    for (cont=0;cont<lista.length;cont++){
-        tabela+= 
-        "<tr>" +
-        "<td>" + lista[cont].titulo + "</td>" + 
-        "<td>" + lista[cont].artista.nomeArtistico + "</td>" + 
-        "<td>" + lista[cont].cadastro + "</td></tr>";
+    fetch("http://localhost:8080/data/" +
+    document.getElementById("datainicio").value + 
+    "/" + document.getElementById("datafim").value)
+        .then(res => res.json())
+        .then(res => montartabela(res));
+//        .catch(err => {
+  //          window.alert("Erro na busca da tabela!");
+    //    });
+
+
     }
 
-    tabela+="</table>";
-    document.getElementById("resultado").innerHTML=tabela;
-} */
+    function montartabela(lista){
+    //    window.alert(lista);
+        var tabela = 
+        "<table border'1' align='center' width='80%' cellspacing='2'>" +
+        "<tr>" +
+        "<th>Data</th> " +
+        "<th>Alarme</th>" +
+        "<th>Equipamento</th>" +
+        "</th>";
+
+        for (cont=0;cont<lista.length;cont++){
+            tabela+=
+            "<tr>" +
+            "<td>" + lista[cont].data + "</td>" +
+            "<td>" + lista[cont].alarme.nome + "</td>" +
+            "<td>" + lista[cont].equipamento.ip + "</td></tr>";
+
+            
+        }
+
+        tabela+="</table>";
+        document.getElementById("lista").innerHTML=tabela;
+
+    }
+
+
+
+function filtrarcontagem(){
+
+    fetch("http://localhost:8080/contagem/" +
+    document.getElementById("datainicio").value + 
+    "/" + document.getElementById("datafim").value)
+        .then(res => res.json())
+        .then(res => montartabelacontagem(res));
+//        .catch(err => {
+  //          window.alert("Erro na busca da tabela!");
+    //    });
+
+
+    }
+
+    
+
+    function montartabelacontagem(lista){
+        var tabela = 
+        "<table border'1' align='center' width='80%' cellspacing='2'>" +
+        "<tr>" +
+        "<th>Alarme</th> " +
+        "<th> QTD no Período </th>" +
+        "</th>";
+
+        for (cont=0;cont<lista.length;cont+=2){
+            tabela+=
+            "<tr>" +
+            "<td>" + lista[cont] + "</td>" +
+            "<td>" + lista[cont+1] + "</td></tr>";
+
+        }
+
+        tabela+="</table>";
+        document.getElementById("resultado").innerHTML=tabela;
+
+    }
+
+
+
+
+
+
+function filtrar(){
+    var valor =  document.getElementById("cmbfiltrorel").value;
+   
+    if (valor == 1){
+        window.location.href = "relatorioev.html";
+
+    } 
+    else if(valor == 2) {
+        window.location.href = "relatorioal.html";
+
+    }
+   
+   // fetch("http://localhost:8080/lancamento/" + valor)
+   //     .then(res=>res.json())
+    //    .then(res=>preencherMusicas(res))
+    //    .catch(err => {
+     //       window.alert("teste!");
+      //  });
+}
+
+
+
+
 
 function carregarusuario(){
     var usuario = localStorage.getItem("usuariologado");
@@ -28,9 +114,10 @@ function carregarusuario(){
         document.getElementById("dados").innerHTML = 
         "<h3>Nome: " + usuarioJson.nome + " <br>Email: " + usuarioJson.email + "</h3>";
         document.getElementById("foto").innerHTML=
-        "<img width='25%' heigth='75%' alt='Sem foto' src=imagens/" + usuarioJson.foto + ">";
+        "<img width='25%' heigth='25%' alt='Sem foto' src=imagens/" + usuarioJson.foto + ">";
     }
 }
+
 
 function logar(){
     var usuario = {
@@ -53,40 +140,8 @@ function logar(){
             window.location="usuario.html";
         })
         .catch(err => {
-            window.alert("Certifique que usuário/senha estão corretos");
+            window.alert("Deu ruim");
         });
+
+
 }
-function filtrar(){
-    var valor =  document.getElementById("cmbfiltrorel").value;
-   
-    if (valor == 1){
-        window.location.href = "relatorioev.html";
-
-    } 
-    else if(valor == 2) {
-        window.location.href = "relatorioal.html";
-
-    }
-}
-
-/*function preencherAlarmes(lista){
-    var tabela =
-    "<table border='1' align='center' width='80%' cellspacing='2'>" +
-    "<tr>" +
-    "<th>IdAlarme</th>" + 
-    "<th>NomeAlarme</th>"+
-    "<th>DescricaoAlarme</th>"+
-    "</tr>";
-
-    for (cont=0;cont<lista.length;cont++){
-        tabela+= 
-        "<tr>" +
-        "<td>" + lista[cont].id + "</td>" + 
-        "<td>" + lista[cont].nome + "</td>" + 
-        "<td>" + lista[cont].descricao + "</td></tr>";
-    }
-
-    tabela+="</table>";
-    document.getElementById("resultado").innerHTML=tabela;
-} */
-
