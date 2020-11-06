@@ -44,9 +44,13 @@ public class UsuarioController {
 	public ResponseEntity <Usuario> logar(@RequestBody Usuario objeto) {
 		Usuario resposta = dao.findByEmailAndSenha(objeto.getEmail(), objeto.getSenha() );
 		if (resposta == null) {
+			resposta = dao.findByRacfAndSenha(objeto.getEmail(), objeto.getSenha());
+			if (resposta == null) {
 			return ResponseEntity.status(404).build();
 		}
+		}
 		return ResponseEntity.ok(resposta);
+	
 	}
 	
 	@PostMapping("/gravarusuario")
