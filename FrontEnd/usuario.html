@@ -7,48 +7,58 @@
     <title>Usuario</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script type="text/JavaScript" src="js/usuario.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/usuario.js"></script>
+
 </head>
 
 <body onload="carregarusuario()">
     <div class="container">
+
         <div class="row">
-            <div class="col-12">
-                <h3 class="text-center">Projeto ItauMon - Usuário</h3>
-                <a href="index.html" align="right" type="button" class="btn btn-primary">Logout</a><br><br>
+            <div class="w-100"></div>
+            <div class="col-sm-1" style="margin: auto;">
+                <a href="https://front-mon1.herokuapp.com/usuario.html" target="_blank"><img src="imagens\logo.jpg"></a>
+            </div>
+
+            <div class="col-sm-10" style="margin: auto;">
+                <h3 class="text-center">Projeto ItauMON - Login</h3>
+            </div>
+
+            <div class="col-sm-1" style="margin: auto;">
+                <a href="https://front-mon1.herokuapp.com/" aling="right" type="button"
+                    class="btn btn-primary">Logout</a>
             </div>
         </div>
 
-        <div class="row">
-            <div id="foto" class="col-12">
 
+        <div class="row">
+            <div id="foto" class="col-sm-9">
+            </div>
+
+            <div id="dados" class="col-sm-3" >
             </div>
         </div>
 
-        <div class="row">
-            <div id="dados" class="col-12">
-
-            </div>
-        </div>
         <br><br><br>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Relatórios</label>
+                <label class="input-group-text" for="inputGroupSelect01">Selecione seu Relatório:</label>
             </div>
             <select id="cmbfiltrorel" class="custom-select">
-                <option selected value="0"></option>
-                <option value="1">Relatório de Eventos por Período</option>
-                <option value="2">Relatório Consolidado por Alarmes</option>
+
+                <option selected value="1">Relatório de Eventos por Período</option>
+                <option value="0">Relatório Consolidado por Alarmes</option>
             </select>
+
+
         </div>
 
-        <button onclick="filtrar()" type="button" class="btn btn-primary">Visualizar</button> <br><br>
+        <button onclick="filtrar()" type="button" class="btn btn-primary">Filtrar</button>
 
-        <div class="row">
-            <div id="resultado" class="col-12">
 
-            </div>
-        </div>
+    </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

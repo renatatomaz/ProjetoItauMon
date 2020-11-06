@@ -1,6 +1,125 @@
+function exporta1(){
+
+    fetch(API+"/contagem/" +
+    document.getElementById("datainicio").value + 
+    "/" + document.getElementById("datafim").value)
+        .then(res => res.json())
+        .then(res => gerarCSV1(res));
+//        .catch(err => {
+  //          window.alert("Erro na busca da tabela!");
+    //    });
+
+
+    }
+
+    function gerarCSV1(resultado) {
+
+        let relatorio = document.getElementById("resultado");
+    
+        if (resultado == null || resultado.lenght == 0) {
+            relatorio.innerHTML = `<p>Nenhum registro encontrado.</p>`;
+            return;
+        }
+        
+        let csv = "";
+
+        for (cont=0;cont<resultado.length;cont+=2){
+            csv += `${resultado[cont]};${resultado[cont+1]};\n`; 
+       
+
+             
+        };
+
+        let hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = 'solicitacoes.csv'
+        hiddenElement.click();
+    
+    }
+
+
+function CriaPDF() {
+    var minhaTabela = document.getElementById('lista').innerHTML;
+    var style = "<style>";
+    style = style + "table {width: 100%;font: 20px Calibri;}";
+    style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+    style = style + "padding: 2px 3px;text-align: center;}";
+    style = style + "</style>";
+
+    // CRIA UM OBJETO WINDOW
+    var win = window.open('', '', 'height=700,width=800');
+    win.document.write('<html><head>');
+    win.document.write('<title> Relatório </title>');   // <title> CABEÇALHO DO PDF.
+    win.document.write(style);                                     // INCLUI UM ESTILO NA TAB HEAD
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write(minhaTabela);                          // O CONTEUDO DA TABELA DENTRO DA TAG BODY
+    win.document.write('</body></html>');
+    win.document.close(); 	                                         // FECHA A JANELA
+    win.print();                                                            // IMPRIME O CONTEUDO
+}
+
+function CriaPDF1() {
+    var minhaTabela = document.getElementById('resultado').innerHTML;
+    var style = "<style>";
+    style = style + "table {width: 100%;font: 20px Calibri;}";
+    style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+    style = style + "padding: 2px 3px;text-align: center;}";
+    style = style + "</style>";
+
+    // CRIA UM OBJETO WINDOW
+    var win = window.open('', '', 'height=700,width=800');
+    win.document.write('<html><head>');
+    win.document.write('<title> Relatório </title>');   // <title> CABEÇALHO DO PDF.
+    win.document.write(style);                                     // INCLUI UM ESTILO NA TAB HEAD
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write(minhaTabela);                          // O CONTEUDO DA TABELA DENTRO DA TAG BODY
+    win.document.write('</body></html>');
+    win.document.close(); 	                                         // FECHA A JANELA
+    win.print();                                                            // IMPRIME O CONTEUDO
+}
+
+
+function exportar() {
+
+    fetch(API+"/data/" +
+    document.getElementById("datainicio").value + 
+    "/" + document.getElementById("datafim").value)
+        .then(res => res.json())
+        .then(res => gerarCSV(res));
+
+
+}
+
+
+function gerarCSV(lista) {
+   
+    let relatorio = document.getElementById("lista");
+
+    if (lista == null || lista.lenght == 0) {
+        relatorio.innerHTML = `<p>Nenhum registro encontrado.</p>`;
+        return;
+    }
+    
+    let csv = "";
+    
+    lista.forEach(resultado => {
+    
+        csv += `${resultado.data};${resultado.alarme.nome};${resultado.equipamento.ip}\n`;        
+    });
+    let hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'solicitacoes.csv'
+    hiddenElement.click();
+
+}
+
 function filtrar1(){
 
-    fetch("http://localhost:8080/data/" +
+    fetch(API+"/data/" +
     document.getElementById("datainicio").value + 
     "/" + document.getElementById("datafim").value)
         .then(res => res.json())
@@ -15,7 +134,7 @@ function filtrar1(){
     function montartabela(lista){
     //    window.alert(lista);
         var tabela = 
-        "<table border'1' align='center' width='80%' cellspacing='2'>" +
+        "<table class='table' border'1' align='center' width='80%' cellspacing='2'>" + 
         "<tr>" +
         "<th>Data</th> " +
         "<th>Alarme</th>" +
@@ -41,7 +160,7 @@ function filtrar1(){
 
 function filtrarcontagem(){
 
-    fetch("http://localhost:8080/contagem/" +
+    fetch(API+"/contagem/" +
     document.getElementById("datainicio").value + 
     "/" + document.getElementById("datafim").value)
         .then(res => res.json())
@@ -57,7 +176,7 @@ function filtrarcontagem(){
 
     function montartabelacontagem(lista){
         var tabela = 
-        "<table border'1' align='center' width='80%' cellspacing='2'>" +
+        "<table class='table' border'1' align='center' width='80%' cellspacing='2'>" + 
         "<tr>" +
         "<th>Alarme</th> " +
         "<th> QTD no Período </th>" +
@@ -88,7 +207,7 @@ function filtrar(){
         window.location.href = "relatorioev.html";
 
     } 
-    else if(valor == 2) {
+    else if(valor == 0) {
         window.location.href = "relatorioal.html";
 
     }
@@ -108,11 +227,11 @@ function filtrar(){
 function carregarusuario(){
     var usuario = localStorage.getItem("usuariologado");
     if (usuario==null){
-        window.location="index.html";
+        window.location="https://front-mon1.herokuapp.com/";
     }else{
         var usuarioJson = JSON.parse(usuario);
         document.getElementById("dados").innerHTML = 
-        "<h3>Nome: " + usuarioJson.nome + " <br>Email: " + usuarioJson.email + "</h3>";
+        "<h5>Nome: " + usuarioJson.nome + " <br>Email: " + usuarioJson.email + "teste" + "</h5>" ;
         document.getElementById("foto").innerHTML=
         "<img width='25%' heigth='25%' alt='Sem foto' src=imagens/" + usuarioJson.foto + ">";
     }
@@ -133,11 +252,11 @@ function logar(){
         }
     };
 
-    fetch("http://localhost:8080/login", conteudo)
+    fetch(API+"/login", conteudo)
         .then(res => res.json())
         .then(res => {
             localStorage.setItem("usuariologado",JSON.stringify(res));
-            window.location="usuario.html";
+            window.location="https://front-mon1.herokuapp.com/usuario.html";
         })
         .catch(err => {
             window.alert("Deu ruim");
